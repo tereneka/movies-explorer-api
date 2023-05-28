@@ -39,7 +39,7 @@ const movieSchema = new Schema({
     required: true,
     validate: urlValidator,
   },
-  trailerLink: {
+  trailer: {
     type: String,
     required: true,
     validate: urlValidator,
@@ -49,21 +49,21 @@ const movieSchema = new Schema({
     required: true,
     validate: urlValidator,
   },
-  owner: {
-    type: Schema.Types.ObjectId,
-    ref: 'user',
-    required: true,
-  },
-  movieId: {
-    type: Number,
-    required: true,
-  },
   nameRU: {
     type: String,
     required: true,
   },
   nameEN: {
     type: String,
+    required: true,
+  },
+  movieId: {
+    type: Number,
+    required: true,
+  },
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
     required: true,
   },
 });
