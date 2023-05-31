@@ -3,13 +3,12 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { sendData } = require('../utils');
 const { errStatus } = require('../constants');
-
-const { NODE_ENV, JWT_SECRET } = process.env;
+const { JWT_SECRET } = require('../config');
 
 function sendCookie(res, user) {
   const token = jwt.sign(
     { _id: user._id },
-    NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+    JWT_SECRET,
     {
       expiresIn: '7d',
     },

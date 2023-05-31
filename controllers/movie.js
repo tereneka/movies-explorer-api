@@ -1,43 +1,27 @@
 const { errStatus, errMessage } = require('../constants');
 const Movie = require('../models/movie');
 const NotFoundError = require('../errors/notFoundErr');
+const ForbiddenError = require('../errors/forbiddenErr');
 
 const getMovies = (req, res, next) => {
-  Movie.find({})
+  Movie.find({ owner: req.user._id })
     .then((movies) => res.status(errStatus.OK).send(movies))
     .catch(next);
 };
 
 const addMovie = (req, res, next) => {
-  const {
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailer,
-    thumbnail,
-    nameRU,
-    nameEN,
-    movieId,
-  } = req.body;
-
-  Movie.create({
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailer,
-    thumbnail,
-    nameRU,
-    nameEN,
-    movieId,
+  Movie.findOne({
+    movieId: req.body.movieId,
     owner: req.user._id,
   })
-    .then((movie) => res.status(errStatus.SUCCESS).send(movie))
+    .then((movie) => {
+      if (movie) {
+        throw new ForbiddenError(errMessage.MOVIE_DUPLICATE);
+      }
+      Movie.create({ ...req.body, owner: req.user._id })
+        .then((newMovie) => res.status(errStatus.SUCCESS).send(newMovie))
+        .catch(next);
+    })
     .catch(next);
 };
 
@@ -46,6 +30,10 @@ const deleteMovie = (req, res, next) => {
     .then((movie) => {
       if (!movie) {
         throw new NotFoundError(errMessage.NOT_FOUND);
+      }
+
+      if (movie.owner.toString() !== req.user._id) {
+        throw new ForbiddenError(errMessage.FORBIDDEN);
       }
 
       Movie.findByIdAndRemove(req.params.movieId)

@@ -2,22 +2,24 @@ const { Joi, celebrate } = require('celebrate');
 const { urlReg } = require('../constants');
 
 const movieValidator = celebrate({
-  country: Joi.string().required(),
-  director: Joi.string().required(),
-  duration: Joi.number().required(),
-  year: Joi.string().required(),
-  description: Joi.string().required(),
-  image: Joi.string().required().pattern(urlReg),
-  trailer: Joi.string().required().pattern(urlReg),
-  thumbnail: Joi.string().required().pattern(urlReg),
-  nameRU: Joi.string().required(),
-  nameEN: Joi.string().required(),
-  movieId: Joi.number().required(),
+  body: Joi.object().keys({
+    country: Joi.string().required(),
+    director: Joi.string().required(),
+    duration: Joi.number().required(),
+    year: Joi.string().required(),
+    description: Joi.string().required(),
+    image: Joi.string().required().pattern(urlReg),
+    trailerLink: Joi.string().required().pattern(urlReg),
+    thumbnail: Joi.string().required().pattern(urlReg),
+    movieId: Joi.number().required(),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
+  }),
 });
 
 const movieIdValidator = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.number().required(),
+    id: Joi.string().required().hex().length(24),
   }),
 });
 
