@@ -14,8 +14,8 @@ router.use('/movies', require('./movie'));
 
 router.post('/signout', logout);
 
-router.use(() => {
-  throw new NotFoundErr('Неверный URL');
+router.use((req, res, next) => {
+  next(new NotFoundErr('Неверный URL'));
 });
 
 module.exports = { router };

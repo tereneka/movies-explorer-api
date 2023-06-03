@@ -10,18 +10,8 @@ const getMovies = (req, res, next) => {
 };
 
 const addMovie = (req, res, next) => {
-  Movie.findOne({
-    movieId: req.body.movieId,
-    owner: req.user._id,
-  })
-    .then((movie) => {
-      if (movie) {
-        throw new ForbiddenError(errMessage.MOVIE_DUPLICATE);
-      }
-      Movie.create({ ...req.body, owner: req.user._id })
-        .then((newMovie) => res.status(errStatus.SUCCESS).send(newMovie))
-        .catch(next);
-    })
+  Movie.create({ ...req.body, owner: req.user._id })
+    .then((newMovie) => res.status(errStatus.SUCCESS).send(newMovie))
     .catch(next);
 };
 
@@ -36,9 +26,8 @@ const deleteMovie = (req, res, next) => {
         throw new ForbiddenError(errMessage.FORBIDDEN);
       }
 
-      Movie.findByIdAndRemove(req.params.movieId)
-        .then(() => res.send({ message: 'Фильм удалён' }))
-        .catch(next);
+      movie.deleteOne();
+      res.send({ message: 'Фильм удалён' });
     })
     .catch(next);
 };

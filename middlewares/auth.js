@@ -8,7 +8,8 @@ module.exports = (req, res, next) => {
   const { jwt } = req.cookies;
 
   if (!jwt) {
-    throw new AuthorizationErr(errMessage.NEED_AUTH);
+    next(new AuthorizationErr(errMessage.NEED_AUTH));
+    return;
   }
 
   let payload;

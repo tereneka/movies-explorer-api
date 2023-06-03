@@ -5,14 +5,15 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "lint": "npx eslint ./"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tereneka/movies-explorer-api.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ekaterina Terentieva",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/tereneka/movies-explorer-api/issues"
