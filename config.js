@@ -17,8 +17,6 @@ module.exports = {
     ? MONGO_URL : 'mongodb://localhost:27017/moviesdb',
   WINDOW_MS,
   MAX_REQUESTS_NUMBER,
-  ALLOWED_CORS: NODE_ENV === 'production'
-    ? ALLOWED_CORS.split(',')
-    : ['https://localhost:3000', 'http://localhost:3000'],
+  ALLOWED_CORS: ALLOWED_CORS.split(','),
   JWT_SECRET: NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
 };
